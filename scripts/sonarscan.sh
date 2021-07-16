@@ -9,7 +9,7 @@ SONAR_ORGANIZATION="$SONAR_ORG"
 
 sonar_logout() {
   set +eu
-  dotnet sonarscanner end /d:sonar.login="$SONAR_TOKEN"
+  dotnet-sonarscanner end /d:sonar.login="$SONAR_TOKEN"
 }
 
 sonar_args="/o:$SONAR_ORGANIZATION \
@@ -22,9 +22,9 @@ sonar_args="/o:$SONAR_ORGANIZATION \
     /d:sonar.scm.revision=$GITHUB_SHA"
 
 if [ "$PULL_REQUEST_KEY" = null ]; then
-  eval "dotnet sonarscanner begin $sonar_args /d:sonar.branch.name=$BRANCH_NAME"
+  eval "dotnet-sonarscanner begin $sonar_args /d:sonar.branch.name=$BRANCH_NAME"
 else
-  eval "dotnet sonarscanner begin $sonar_args /d:sonar.pullrequest.key=$PULL_REQUEST_KEY"
+  eval "dotnet-sonarscanner begin $sonar_args /d:sonar.pullrequest.key=$PULL_REQUEST_KEY"
 fi
 
 trap "sonar_logout" EXIT
