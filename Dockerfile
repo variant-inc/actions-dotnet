@@ -56,7 +56,7 @@ RUN apk add --no-cache \
   aws --version &&\
   \
   dotnet tool install dotnet-sonarscanner --tool-path /usr/local/bin &&\
-  dotnet tool install coverlet.console --version 1.7.2 --tool-path /usr/local/bin &&\
+  dotnet tool install coverlet.console --tool-path /usr/local/bin &&\
   dotnet tool install dotnet-reportgenerator-globaltool --tool-path /usr/local/bin &&\
   curl -fsSL https://dot.net/v1/dotnet-install.sh -o dotnet-install.sh &&\
   chmod +x dotnet-install.sh &&\
