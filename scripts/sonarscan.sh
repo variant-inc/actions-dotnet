@@ -9,7 +9,7 @@ SONAR_ORGANIZATION="$SONAR_ORG"
 
 sonar_logout() {
   set +eu
-  dotnet-sonarscanner end /d:sonar.login="$SONAR_TOKEN"
+  dotnet sonarscanner end /d:sonar.login="$SONAR_TOKEN"
 }
 
 sonar_args="/o:$SONAR_ORGANIZATION \
