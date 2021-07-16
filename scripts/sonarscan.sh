@@ -29,7 +29,7 @@ fi
 
 trap "sonar_logout" EXIT
 
-# dotnet build
+dotnet build
 pwsh /scripts/cover.ps1
 
 # reportgenerator \
