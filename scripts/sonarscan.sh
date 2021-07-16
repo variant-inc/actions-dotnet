@@ -16,7 +16,7 @@ sonar_args="/o:$SONAR_ORGANIZATION \
     /k:$SONAR_PROJECT_KEY \
     /d:sonar.host.url=https://sonarcloud.io \
     /d:sonar.login=$SONAR_TOKEN \
-    /d:sonar.cs.opencover.reportsPaths=**/$OUTPUTDIR/**/coverage.opencover.xml \
+    /d:sonar.cs.opencover.reportsPaths=**/coverage.opencover.xml \
     /d:sonar.exclusions=**/*Migrations/**/* \
     /d:sonar.scm.disabled=true \
     /d:sonar.scm.revision=$GITHUB_SHA"
