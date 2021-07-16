@@ -16,7 +16,7 @@ sonar_args="/o:$SONAR_ORGANIZATION \
     /k:$SONAR_PROJECT_KEY \
     /d:sonar.host.url=https://sonarcloud.io \
     /d:sonar.login=$SONAR_TOKEN \
-    /d:sonar.cs.opencover.reportsPaths=**/coverage.opencover.xml \
+    /d:sonar.cs.opencover.reportsPaths=**/$OUTPUTDIR/**/coverage.opencover.xml \
     /d:sonar.exclusions=**/*Migrations/**/* \
     /d:sonar.scm.disabled=true \
     /d:sonar.scm.revision=$GITHUB_SHA"
@@ -29,21 +29,8 @@ fi
 
 trap "sonar_logout" EXIT
 
-set +e
-dotnet test \
-  /p:CollectCoverage=true \
-  /p:CoverletOutput=${OUTPUTDIR}/coverage.opencover.xml \
-  /p:CoverletOutputFormat=opencover \
-  /p:CoverletSkipAutoProps=true \
-  /p:Exclude=[*]*Migrations.*
-set -e
-
-dotnet reportgenerator \
-  -reports:**/${OUTPUTDIR}/coverage.opencover.xml \
-  -targetdir:${OUTPUTDIR}
-
 # dotnet build
-# pwsh /scripts/cover.ps1
+pwsh /scripts/cover.ps1
 
 # reportgenerator \
 #   -reports:"**/$OUTPUTDIR/coverage.opencover.xml" \
