@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/core/sdk:3.1-alpine
+FROM mcr.microsoft.com/dotnet/sdk:5.0-alpine
 
 ARG BUILD_DATE
 ARG BUILD_REVISION
@@ -53,18 +53,18 @@ RUN apk add --no-cache \
   glibc-${GLIBC_VER}.apk \
   glibc-bin-${GLIBC_VER}.apk &&\
   rm -rf /var/cache/apk/* &&\
-  aws --version &&\
-  \
-  dotnet tool install dotnet-sonarscanner --tool-path /usr/local/bin &&\
-  dotnet tool install coverlet.console --version 1.7.2 --tool-path /usr/local/bin &&\
-  dotnet tool install dotnet-reportgenerator-globaltool --tool-path /usr/local/bin &&\
+  aws --version
+
+RUN  dotnet tool install dotnet-sonarscanner --tool-path /usr/local/bin &&\
   curl -fsSL https://dot.net/v1/dotnet-install.sh -o dotnet-install.sh &&\
   chmod +x dotnet-install.sh &&\
   ./dotnet-install.sh --channel Current &&\
   ./dotnet-install.sh --channel LTS &&\
   ./dotnet-install.sh --channel 5.0 &&\
   ./dotnet-install.sh --channel 3.1 &&\
-  ln -sf /root/.dotnet/dotnet /usr/bin/dotnet
+  ln -sf /root/.dotnet/dotnet /usr/bin/dotnet &&\
+  dotnet --version &&\
+  dotnet tool install coverlet.console --tool-path /usr/local/bin
 
 SHELL ["/bin/ash", "-eo", "pipefail", "-c"]
 RUN curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/master/contrib/install.sh | sh -s -- -b /usr/local/bin

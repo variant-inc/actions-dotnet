@@ -31,7 +31,3 @@ trap "sonar_logout" EXIT
 
 dotnet build
 pwsh /scripts/cover.ps1
-
-# reportgenerator \
-#   -reports:"**/$OUTPUTDIR/coverage.opencover.xml" \
-#   -targetdir:"$OUTPUTDIR"
