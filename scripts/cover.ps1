@@ -38,4 +38,5 @@ ce dotnet test `
   /p:CoverletOutput=${env:OUTPUTDIR}/coverage.opencover.xml `
   /p:CoverletOutputFormat=opencover `
   /p:CoverletSkipAutoProps=true `
-  /p:Exclude=[*]*Migrations.*
+  /p:Exclude=[*]*Migrations.* `
+  --filter "FullyQualifiedName!~ntegration"
