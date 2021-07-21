@@ -12,7 +12,7 @@ Setting up continuous integration
     - [Adding dotnet action to workflow](#adding-dotnet-action-to-workflow)
     - [Input Parameters](#input-parameters)
   - [What it does](#what-it-does)
-  
+
 ## Prerequisites
 
 ### 1. Setup github action workflow
