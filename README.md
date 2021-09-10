@@ -65,6 +65,18 @@ Refer [actions setup](https://github.com/variant-inc/actions-setup/blob/master/R
 
 ```
 
+2. (Optionally) Add Script to run before running workflow.
+
+    In `.github/actions`, add a file named `pre_test.sh` that will run any commands required for testing your codebase using this action. You will need to you a package manager supported by Alpine Linux
+
+    Example:
+    ```bash
+    apk add --no-cache \
+      bash \
+      git \
+      curl
+    ```
+
 ### 4. Add octopus action
 
 1. Adding octopus action will add ability to setup continuos delivery to octopus. This action can be invoked by action name and release version.
@@ -154,3 +166,4 @@ Github action dotnet is a CI utility which does build , test , sonar scan , buil
 In detail Information
 
 Refer [Confluence link](https://usxtech.atlassian.net/wiki/spaces/CLOUD/pages/1346404365/Lazy+Github+Action+Dotnet)
+
