@@ -28,6 +28,7 @@ $tests = $(dotnet sln $solutionFileDir list) | Select-Object -Skip 2 | Where-Obj
 $tests | ForEach-Object {
   $file = [System.IO.DirectoryInfo]"$_"
   $parent = $($file.parent.fullname)
+  ce dotnet add $parent package coverlet.msbuild
   ce dotnet add $parent package coverlet.collector
 }
 
