@@ -15,7 +15,7 @@ cd "$INPUT_SRC_FILE_DIR_PATH"
 echo "Current directory: $(pwd)"
 
 echo "Cloning into actions-collection..."
-git clone -b v1 https://github.com/variant-inc/actions-collection.git ./actions-collection
+git clone -b feature/CLOUD-1389-sonar-project-and-scan https://github.com/variant-inc/actions-collection.git ./actions-collection
 
 echo "---Start: Pretest script"
 chmod +x ./actions-collection/scripts/pre_test.sh
@@ -32,6 +32,10 @@ echo "Print Branch name: $BRANCH_NAME"
 export GITHUB_USER="$GITHUB_REPOSITORY_OWNER"
 
 echo "End: Setting Prerequisites"
+
+echo "Start: Enable sonar"
+  ./actions-collection/scripts/enable_sonar.sh
+echo "End: Enable sonar"
 
 echo "Start: Sonar Scan"
 sh -c "/scripts/coverage_scan.sh"
