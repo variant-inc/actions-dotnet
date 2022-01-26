@@ -22,7 +22,7 @@ chmod +x ./actions-collection/scripts/pre_test.sh
 ./actions-collection/scripts/pre_test.sh
 
 export AWS_WEB_IDENTITY_TOKEN_FILE="/token"
-echo "$AWS_WEB_IDENTITY_TOKEN" >> "$AWS_WEB_IDENTITY_TOKEN_FILE"
+echo "$AWS_WEB_IDENTITY_TOKEN" >>"$AWS_WEB_IDENTITY_TOKEN_FILE"
 
 export AWS_DEFAULT_REGION="${AWS_DEFAULT_REGION:=us-east-1}"
 
@@ -34,7 +34,7 @@ export GITHUB_USER="$GITHUB_REPOSITORY_OWNER"
 echo "End: Setting Prerequisites"
 
 echo "Start: Enable sonar"
-  ./actions-collection/scripts/enable_sonar.sh
+pwsh ./actions-collection/scripts/enable_sonar.ps1
 echo "End: Enable sonar"
 
 echo "Start: Sonar Scan"
