@@ -8,9 +8,29 @@ mkdir -p "$OUTPUTDIR"
 SONAR_ORGANIZATION="$SONAR_ORG"
 
 sonar_logout() {
-  set +u
+  set +ue
   dotnet-sonarscanner end /d:sonar.login="$SONAR_TOKEN"
+  exit_code=$?
+  if [ "$exit_code" -eq 0 ]; then
+    echo -e "\e[1;32m ________________________________________________________________\e[0m"
+    echo -e "\e[1;32m Quality Gate Passed.\e[0m"
+    echo -e "\e[1;32m ________________________________________________________________\e[0m"
+  elif [ "$exit_code" -gt 0 ]; then
+    set -e
+    echo -e "\e[1;31m ________________________________________________________________\e[0m"
+    echo -e "\e[1;31m ________________________________________________________________\e[0m"
+    echo ""
+    echo ""
+    echo -e "\e[1;31m Sonar Quality Gate failed in $SONAR_PROJECT_KEY.\e[0m"
+    echo ""
+    echo ""
+    echo -e "\e[1;31m ________________________________________________________________\e[0m"
+    echo -e "\e[1;31m ________________________________________________________________\e[0m"
+    exit 1 
+  fi
 }
+
+trap "sonar_logout" EXIT
 
 wait_flag="false"
 if [ "$BRANCH_NAME" == "master" ] || [ "$BRANCH_NAME" == "main" ]; then
@@ -28,12 +48,12 @@ sonar_args="/o:$SONAR_ORGANIZATION \
     /d:sonar.qualitygate.wait=$wait_flag"
 
 if [ "$PULL_REQUEST_KEY" = null ]; then
+  echo "Pull request key is null"
   eval "dotnet-sonarscanner $sonar_args /d:sonar.branch.name=$BRANCH_NAME"
 else
   eval "dotnet-sonarscanner $sonar_args /d:sonar.pullrequest.key=$PULL_REQUEST_KEY"
 fi
 
-trap "sonar_logout" EXIT
-
 dotnet build
 pwsh /scripts/cover.ps1
+
