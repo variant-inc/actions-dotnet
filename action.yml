@@ -1,4 +1,4 @@
-# action.yml
+---
 name: "Lazy Action Dotnet"
 description: "Github action to perform build, test , scan and generate image."
 inputs:
@@ -20,23 +20,10 @@ inputs:
     description: "sonar scan in docker target"
     required: false
     default: "sonarscan-env"
-  nuget_push_enabled:
-    description: "Enabled Nuget Push to Package Registry."
-    required: false
-    default: "false"
   container_push_enabled:
     description: "Enable Build and Push Container Image"
     required: false
     default: "true"
-  nuget_pull_token:
-    description: "GitHub token with repo read permissions for pulling NuGet packages"
-    required: true
-  nuget_push_token:
-    description: "GitHub token with package write permissions for pushing NuGet packages"
-    required: false
-
 runs:
   using: "docker"
-  image: docker://public.ecr.aws/p4v7w0a5/lazy/dotnet-action:v1.4.2
-  env:
-    GITHUB_TOKEN: ${{ inputs.nuget_pull_token }}
+  image: docker://public.ecr.aws/p4v7w0a5/lazy/dotnet-action:v1.4.3

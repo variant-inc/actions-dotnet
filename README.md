@@ -4,7 +4,7 @@ Setting up continuous integration
 
 - [Actions - Dotnet](#actions---dotnet)
   - [Prerequisites](#prerequisites)
-    - [1. Setup github action workflow](#1-setup-github-action-workflow)
+    - [1. Setup GitHub action workflow](#1-setup-github-action-workflow)
     - [2. Add actions setup](#2-add-actions-setup)
     - [3. Add the dotnet action](#3-add-the-dotnet-action)
     - [4. Add octopus action](#4-add-octopus-action)
@@ -15,7 +15,7 @@ Setting up continuous integration
 
 ## Prerequisites
 
-### 1. Setup github action workflow
+### 1. Setup GitHub action workflow
 
 1. On GitHub, navigate to the main page of the repository.
 2. Under your repository name, click Actions.
@@ -23,7 +23,7 @@ Setting up continuous integration
 
 ### 2. Add actions setup
 
-1. Add a code checkout step this will be needed to add code to the github workspace.
+1. Add a code checkout step this will be needed to add code to the GitHub workspace.
 
 ```yaml
     - uses: actions/checkout@v2
@@ -50,18 +50,13 @@ Refer [actions setup](https://github.com/variant-inc/actions-setup/blob/master/R
       id: lazy-action
       uses: variant-inc/actions-dotnet@v1
       env:
-        NUGET_TOKEN: ${{ secrets.PKG_READ }}
         AWS_DEFAULT_REGION: us-east-2
         AWS_REGION: us-east-2
-        GITHUB_USER: variant-inc
       with:
         src_file_dir_path: '.'
         dockerfile_dir_path: '.'
         ecr_repository: naveen-demo-app/demo-repo
-        nuget_push_enabled: 'true'
         sonar_scan_in_docker: 'false'
-        nuget_push_token: ${{ secrets.GITHUB_TOKEN }}
-        nuget_pull_token: ${{ secrets.PKG_READ }}
 
 ```
 
@@ -70,6 +65,7 @@ Refer [actions setup](https://github.com/variant-inc/actions-setup/blob/master/R
     In `.github/actions`, add a file named `pre_test.sh` that will run any commands required for testing your codebase using this action. You will need to you a package manager supported by Alpine Linux
 
     Example:
+
     ```bash
     apk add --no-cache \
       bash \
@@ -123,9 +119,7 @@ jobs:
       id: lazy-action
       uses: variant-inc/actions-dotnet@v1
       env:
-        NUGET_TOKEN: ${{ secrets.PKG_READ }}
         AWS_DEFAULT_REGION: us-east-2
-        GITHUB_USER: variant-inc
       with:
         src_file_dir_path: '.'
         dockerfile_dir_path: '.'
@@ -154,16 +148,12 @@ jobs:
 | `dockerfile_dir_path`         | `.`             | Directory path to the dockerfile                                             | true     |
 | `ecr_repository`              |                 | ECR Repository name                                                          | true     |
 | `sonar_scan_in_docker`        | "false"         | Is sonar scan running as part of Dockerfile                                  | false    |
-| `sonar_scan_in_docker_target` | "sonarscan-env" | sonar scan in docker target.                                                 | false    |
-| `nuget_push_enabled`          | "false"         | Enabled Nuget Push to Package Registry.                                      | false    |
-| `nuget_pull_token`            |                 | GitHub token with repo read permissions for pulling NuGet packages Token     | true     |
-| `nuget_push_token`            |                 | GitHub token with package write permissions for pushing NuGet packages Token | false    |
+| `sonar_scan_in_docker_target` | "sonarscan-env" | sonar scan in docker
 
 ## What it does
 
-Github action dotnet is a CI utility which does build , test , sonar scan , build and push image to ECR , does the trivy vulnerabilities scan and publish package to github registry .This action runs some of the mandatory CI steps and also has ability to skip some of the steps that are not required.
+GitHub action dotnet is a CI utility which does build, test , sonar scan , build and push image to ECR , does the trivy vulnerabilities scan and publish package to GitHub registry.This action runs some of the mandatory CI steps and also has ability to skip some of the steps that are not required.
 
 In detail Information
 
 Refer [Confluence link](https://usxtech.atlassian.net/wiki/spaces/CLOUD/pages/1346404365/Lazy+Github+Action+Dotnet)
-
