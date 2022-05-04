@@ -15,6 +15,6 @@ else
   dotnet pack --no-restore -c Release -o /out
 fi
 
-dotnet nuget push "/out/**/*.nupkg" --source github --skip-duplicate --api-key "$INPUT_NUGET_PUSH_TOKEN"
+dotnet nuget push "/out/**/*.nupkg" --source github --skip-duplicate --api-key "$GITHUB_TOKEN"
 
 rm -rf out
