@@ -9,10 +9,13 @@ function finish {
 trap finish EXIT
 set -eo
 
+
 echo "Start: Setting Prerequisites"
 cd "$GITHUB_WORKSPACE"
 cd "$INPUT_SRC_FILE_DIR_PATH"
 echo "Current directory: $(pwd)"
+
+git config --global --add safe.directory /github/workspace
 
 echo "Cloning into actions-collection..."
 git clone -b v1 https://github.com/variant-inc/actions-collection.git ./actions-collection
