@@ -56,6 +56,7 @@ Refer [actions setup](https://github.com/variant-inc/actions-setup/blob/master/R
         src_file_dir_path: '.'
         dockerfile_dir_path: '.'
         ecr_repository: naveen-demo-app/demo-repo
+        nuget_push_enabled: 'true'
         sonar_scan_in_docker: 'false'
 
 ```
@@ -126,8 +127,6 @@ jobs:
         ecr_repository: naveen-demo-app/demo-repo
         nuget_push_enabled: 'true'
         sonar_scan_in_docker: 'false'
-        nuget_push_token: ${{ secrets.GITHUB_TOKEN }}
-        nuget_pull_token: ${{ secrets.PKG_READ }}
 
     - name: Lazy Action Octopus
       uses: variant-inc/actions-octopus@v1
@@ -148,7 +147,8 @@ jobs:
 | `dockerfile_dir_path`         | `.`             | Directory path to the dockerfile                                             | true     |
 | `ecr_repository`              |                 | ECR Repository name                                                          | true     |
 | `sonar_scan_in_docker`        | "false"         | Is sonar scan running as part of Dockerfile                                  | false    |
-| `sonar_scan_in_docker_target` | "sonarscan-env" | sonar scan in docker
+| `sonar_scan_in_docker_target` | "sonarscan-env" | sonar scan in docker                                                         | false    |
+| `nuget_push_enabled`          | "false"         | Enabled Nuget Push to Package Registry.                                      | false    |
 
 ## What it does
 
