@@ -18,7 +18,7 @@ echo "Current directory: $(pwd)"
 git config --global --add safe.directory /github/workspace
 
 echo "Cloning into actions-collection..."
-git clone -b feature/CLOUD-1738-skip-sonar-analysis https://github.com/variant-inc/actions-collection.git ./actions-collection
+git clone -b v1 https://github.com/variant-inc/actions-collection.git ./actions-collection
 
 echo "---Start: Pretest script"
 chmod +x ./actions-collection/scripts/pre_test.sh
