@@ -30,4 +30,4 @@ inputs:
     default: "true"
 runs:
   using: "docker"
-  image: docker://public.ecr.aws/p4v7w0a5/lazy/dotnet-action:sha-2fa6d4634f9fef0d4350195ac74ec4f0685f93ba
+  image: docker://public.ecr.aws/p4v7w0a5/lazy/dotnet-action:sha-cc57120b3fd81d403f11bc2aad19ee5849ee6b8e
