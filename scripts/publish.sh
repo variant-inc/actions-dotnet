@@ -17,7 +17,7 @@ trap "cleanup" EXIT
 
 echo "Connecting to AWS account."
 
-docker login -u AWS -p "$(aws ecr get-login-password)" "$ECR_REGISTRY"
+docker login -u AWS -p "$(aws ecr get-login-password)" "$ECR_REGISTRY" >/dev/null
 
 DOCKERFILE_PATH="$INPUT_DOCKERFILE_DIR_PATH"
 
