@@ -1,7 +1,6 @@
 #!/bin/bash
 
 function finish {
-  set -x
   chown -R 1000:1000 "$GITHUB_WORKSPACE"/*
   git clean -fdx
   set +x
