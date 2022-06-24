@@ -18,7 +18,7 @@ echo "Current directory: $(pwd)"
 git config --global --add safe.directory /github/workspace
 
 echo "Cloning into actions-collection..."
-git clone -b f/CLOUD-1740-skip-image-push https://github.com/variant-inc/actions-collection.git ./actions-collection
+git clone -b v1 https://github.com/variant-inc/actions-collection.git ./actions-collection
 
 echo "---Start: Pretest script"
 chmod +x ./actions-collection/scripts/pre_test.sh
@@ -64,13 +64,13 @@ if [ "$INPUT_CONTAINER_PUSH_ENABLED" = 'true' ]; then
   echo "End: Publish Image to ECR"
 fi
 
-# echo "Nuget Publish: $INPUT_NUGET_PUSH_ENABLED"
-# if [ "$INPUT_NUGET_PUSH_ENABLED" = 'true' ]; then
-#   echo "Start: Publish Nuget Package"
-#   /scripts/nuget_push.sh
-#   echo "End: Publish Nuget Package"
-# fi
-#
+echo "Nuget Publish: $INPUT_NUGET_PUSH_ENABLED"
+if [ "$INPUT_NUGET_PUSH_ENABLED" = 'true' ]; then
+  echo "Start: Publish Nuget Package"
+  /scripts/nuget_push.sh
+  echo "End: Publish Nuget Package"
+fi
+
 echo "Start: Clean up"
 git clean -fdx
 echo "End: Clean up"
