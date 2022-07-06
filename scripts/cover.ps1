@@ -24,7 +24,7 @@ function CommandAliasFunction
 
 Set-Alias -Name ce -Value CommandAliasFunction -Scope script
 
-$tests = $(dotnet sln $solutionFileDir list) | Select-Object -Skip 2 | Where-Object { $_ -match "^tests//" }
+$tests = $(dotnet sln $solutionFileDir list) | Select-Object -Skip 2 | Where-Object { $_ -match "test" }
 $tests | ForEach-Object {
   $file = [System.IO.DirectoryInfo]"$_"
   $parent = $($file.parent.fullname)
