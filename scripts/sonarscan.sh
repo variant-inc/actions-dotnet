@@ -8,8 +8,8 @@ mkdir -p "$OUTPUTDIR"
 SONAR_ORGANIZATION="$SONAR_ORG"
 
 sonar_logout() {
-  set +ue
   exit_code=$?
+  set +ue
   dotnet-sonarscanner end /d:sonar.login="$SONAR_TOKEN"
   if [ "$exit_code" -eq 0 ]; then
     echo -e "\e[1;32m ________________________________________________________________\e[0m"
