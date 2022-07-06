@@ -9,8 +9,8 @@ SONAR_ORGANIZATION="$SONAR_ORG"
 
 sonar_logout() {
   set +ue
-  dotnet-sonarscanner end /d:sonar.login="$SONAR_TOKEN"
   exit_code=$?
+  dotnet-sonarscanner end /d:sonar.login="$SONAR_TOKEN"
   if [ "$exit_code" -eq 0 ]; then
     echo -e "\e[1;32m ________________________________________________________________\e[0m"
     echo -e "\e[1;32m Quality Gate Passed.\e[0m"
