@@ -48,10 +48,10 @@ runs:
     - name: Install Sonarscan Dependencies
       shell: bash
       run: |
-        dotnet tool install dotnet-sonarscanner
-        dotnet tool install coverlet.console
+        dotnet tool install --global dotnet-sonarscanner
+        dotnet tool install --global coverlet.console
 
     - name: dotnet sonarscan
       shell: bash
       run: |
-        scripts/sonarscan.sh
+        ./.github/workflows/actions-dotnet/scripts/sonarscan.sh
