@@ -1,0 +1,57 @@
+---
+name: Test Dotnet
+description: |
+  Github Action to Build & Test Dotnet
+
+  RequiredEnv:
+    GITHUB_TOKEN
+    SONAR_TOKEN
+inputs:
+  dotnet-version:
+    description: >
+      The dotnet-version input is optional.
+      The default version of Dotnet in PATH varies
+      between runners and can be changed unexpectedly
+      so we recommend always setting Dotnet version explicitly
+      using the dotnet-version input.
+    required: false
+runs:
+  using: composite
+  steps:
+    - name: Set up Dotnet
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: ${{ inputs.dotnet-version }}
+
+    - name: Set up Dotnet
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 5.0.x
+
+    - name: Run pre_test.sh
+      shell: bash
+      run: |
+        pretest_cmd="echo 'NO_PRETEST'"
+        if [ -f ".github/actions/pre_test.sh" ]; then
+            pretest_cmd="$(cat .github/actions/pre_test.sh)"
+        fi
+        echo "pretest_cmd: $pretest_cmd"
+        sh -c "${pretest_cmd}"
+
+    - name: Restore Application Dependencies
+      shell: bash
+      run: |
+        echo "::group::Upgrade Packages"
+        dotnet restore
+        echo "::endgroup::"
+
+    - name: Install Sonarscan Dependencies
+      shell: bash
+      run: |
+        dotnet tool install dotnet-sonarscanner
+        dotnet tool install coverlet.console
+
+    - name: dotnet sonarscan
+      shell: bash
+      run: |
+        scripts/sonarscan.sh
