@@ -49,9 +49,9 @@ sonar_args="/o:$SONAR_ORGANIZATION \
 
 if [ "$PULL_REQUEST_KEY" = null ]; then
     echo "Pull request key is null"
-    eval "dotnet-sonarscanner $sonar_args /d:sonar.branch.name=$BRANCH_NAME"
+    eval "dotnet sonarscanner begin $sonar_args /d:sonar.branch.name=$BRANCH_NAME"
 else
-    eval "dotnet-sonarscanner $sonar_args /d:sonar.pullrequest.key=$PULL_REQUEST_KEY"
+    eval "dotnet sonarscanner begin $sonar_args /d:sonar.pullrequest.key=$PULL_REQUEST_KEY"
 fi
 
 dotnet build
