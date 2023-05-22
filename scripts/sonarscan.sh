@@ -49,4 +49,4 @@ sonar_args="/o:$SONAR_ORGANIZATION \
 
 eval "dotnet sonarscanner begin $sonar_args /d:sonar.branch.name=$GITVERSION_BRANCHNAME"
 dotnet build
-pwsh /scripts/cover.ps1
+pwsh ./.github/workflows/actions-dotnet/scripts/cover.ps1
