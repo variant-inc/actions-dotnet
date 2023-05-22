@@ -9,7 +9,7 @@ SONAR_ORGANIZATION="$SONAR_ORG"
 
 sonar_logout() {
     set +ue
-    dotnet-sonarscanner end /d:sonar.login="$SONAR_TOKEN"
+    dotnet sonarscanner end /d:sonar.login="$SONAR_TOKEN"
     exit_code=$?
     if [ "$exit_code" -eq 0 ]; then
         echo -e "\e[1;32m ________________________________________________________________\e[0m"
@@ -47,12 +47,6 @@ sonar_args="/o:$SONAR_ORGANIZATION \
     /d:sonar.scm.revision=$GITHUB_SHA \
     /d:sonar.qualitygate.wait=$wait_flag"
 
-if [ "$PULL_REQUEST_KEY" = null ]; then
-    echo "Pull request key is null"
-    eval "dotnet sonarscanner begin $sonar_args /d:sonar.branch.name=$BRANCH_NAME"
-else
-    eval "dotnet sonarscanner begin $sonar_args /d:sonar.pullrequest.key=$PULL_REQUEST_KEY"
-fi
-
+eval "dotnet sonarscanner begin $sonar_args /d:sonar.branch.name=$GITVERSION_BRANCHNAME"
 dotnet build
 pwsh /scripts/cover.ps1
