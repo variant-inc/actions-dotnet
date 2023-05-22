@@ -94,4 +94,12 @@ runs:
     - name: Build and Push Nuget
       if: ${{ inputs.nuget_push_enabled == 'true' }}
       shell: bash
-      run: nuget restore MyProject.sln
+      run: |
+        mkdir -p out
+        dotnet pack -c Release -o out  --version-suffix "$IMAGE_VERSION"
+        dotnet nuget push "out/**/*.nupkg" --source github --skip-duplicate --api-key "$GITHUB_TOKEN"
+
+    - shell: bash
+      name: Set Language env
+      run: |
+        echo "LANGUAGE=dotnet" >> "$GITHUB_ENV"
