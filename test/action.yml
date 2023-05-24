@@ -54,4 +54,4 @@ runs:
     - name: dotnet sonarscan
       shell: bash
       run: |
-        ./.github/workflows/actions-dotnet/scripts/sonarscan.sh
+        ./.github/workflows/actions-dotnet/test/sonarscan.sh

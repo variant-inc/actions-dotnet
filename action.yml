@@ -65,9 +65,7 @@ runs:
       shell: bash
       run: |
         mkdir -p ./.github/workflows/actions-dotnet/test
-        mkdir -p ./.github/workflows/actions-dotnet/scripts
         cp -R ${{ github.action_path }}/test/* ./.github/workflows/actions-dotnet/test/
-        cp -R ${{ github.action_path }}/scripts/* ./.github/workflows/actions-dotnet/scripts/
 
     - name: Build & Test Dotnet
       uses: ./.github/workflows/actions-dotnet/test
@@ -98,6 +96,8 @@ runs:
         mkdir -p out
         dotnet pack -c Release -o out  --version-suffix "$IMAGE_VERSION"
         dotnet nuget push "out/**/*.nupkg" --source github --skip-duplicate --api-key "$GITHUB_TOKEN"
+        echo "## Nuget Package Created" >> $GITHUB_STEP_SUMMARY
+        echo "${{ env.IMAGE_VERSION }}" >> $GITHUB_STEP_SUMMARY
 
     - shell: bash
       name: Set Language env
