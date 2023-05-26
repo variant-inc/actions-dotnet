@@ -72,7 +72,6 @@ runs:
       if: ${{ steps.sonar-setup.outputs.sonar_skip != 'True' }}
       with:
         dotnet-version: ${{ inputs.dotnet-version }}
-        nuget-version: ${{ inputs.nuget-version }}
 
     - name: Build and Push Image
       uses: variant-inc/actions-collection/build-push-image@v2
@@ -87,7 +86,7 @@ runs:
       if: ${{ inputs.nuget_push_enabled == 'true' }}
       with:
         nuget-api-key: ${{ env.GITHUB_TOKEN }}
-        nuget-version: ${{ inputs.dotnet-version }}
+        nuget-version: ${{ inputs.nuget-version }}
 
     - name: Build and Push Nuget
       if: ${{ inputs.nuget_push_enabled == 'true' }}
