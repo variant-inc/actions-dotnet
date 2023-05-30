@@ -5,6 +5,8 @@ set -e
 export OUTPUTDIR="coverage"
 mkdir -p "$OUTPUTDIR"
 
+rm -f .config/dotnet-tools.json || true
+
 SONAR_ORGANIZATION="$SONAR_ORG"
 
 sonar_logout() {
