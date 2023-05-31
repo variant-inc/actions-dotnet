@@ -1,33 +1,104 @@
 ---
-name: "Lazy Action Dotnet"
-description: "Github action to perform build, test , scan and generate image."
+# yamllint disable rule:line-length
+name: Lazy Action Dotnet
+description: |
+  Github Action to perform build, test , scan and generate Image for Dotnet
+
+  ## Permissions
+
+  Add the following permissions to the job
+
+  ```yaml
+  permissions:
+    id-token: write
+    contents: read
+  ```
+
+  ## Usage
+
+  ```yaml
+      - name: Actions Dotnet
+        uses: variant-inc/actions-dotnet@v2
+        with:
+          ecr_repository: 'demo/example'
+          dotnet-version: '6.0.x'
+  ```
 inputs:
-  src_file_dir_path:
-    description: "Directory path to the solution file"
-    required: true
-    default: "."
+  aws_region:
+    description: Region where the image will be created.
+    required: false
+    default: us-east-2
   dockerfile_dir_path:
-    description: "Directory path to the dockerfile"
-    required: true
+    description: Directory path to the dockerfile
+    required: false
+    default: .
+  dotnet-version:
+    description: >
+      The dotnet-version input is optional.
+      The default version of Dotnet in PATH varies
+      between runners and can be changed unexpectedly
+      so we recommend always setting Dotnet version explicitly
+      using the dotnet-version input.
+    required: false
   ecr_repository:
-    description: "Ecr repository name"
+    description: Ecr repository name
     required: true
-  sonar_scan_in_docker:
-    description: "Is sonar scan running as part of Dockerfile?"
+  nuget-version:
+    description: Nuget version
     required: false
-    default: "false"
-  sonar_scan_in_docker_target:
-    description: "sonar scan in docker target"
-    required: false
-    default: "sonarscan-env"
+    default: latest
   nuget_push_enabled:
-    description: "Enabled Nuget Push to Package Registry."
+    description: Enabled Nuget Push to Package Registry.
     required: false
-    default: "false"
-  container_push_enabled:
-    description: "Enable Build and Push Container Image"
-    required: false
-    default: "true"
+    default: 'false'
 runs:
-  using: "docker"
-  image: docker://public.ecr.aws/p4v7w0a5/lazy/dotnet-action:v1.6.1
+  using: composite
+  steps:
+    - name: Setup Actions
+      uses: variant-inc/actions-setup@v2
+
+    - name: Sonar Setup
+      id: sonar-setup
+      uses: variant-inc/actions-collection/sonar-setup@v2
+
+    - name: Relocate Test Action
+      shell: bash
+      run: |
+        mkdir -p ./.github/workflows/actions-dotnet/test
+        cp -R ${{ github.action_path }}/test/* ./.github/workflows/actions-dotnet/test/
+
+    - name: Build & Test Dotnet
+      uses: ./.github/workflows/actions-dotnet/test
+      if: ${{ steps.sonar-setup.outputs.sonar_skip != 'True' }}
+      with:
+        dotnet-version: ${{ inputs.dotnet-version }}
+
+    - name: Build and Push Image
+      uses: variant-inc/actions-collection/build-push-image@v2
+      if: ${{ inputs.ecr_repository != '' }}
+      with:
+        aws_region: ${{ inputs.aws_region }}
+        dockerfile_dir_path: ${{ inputs.dockerfile_dir_path }}
+        ecr_repository: ${{ inputs.ecr_repository }}
+
+    - name: Set up Nuget
+      uses: nuget/setup-nuget@v1
+      if: ${{ inputs.nuget_push_enabled == 'true' }}
+      with:
+        nuget-api-key: ${{ env.GITHUB_TOKEN }}
+        nuget-version: ${{ inputs.nuget-version }}
+
+    - name: Build and Push Nuget
+      if: ${{ inputs.nuget_push_enabled == 'true' }}
+      shell: bash
+      run: |
+        mkdir -p out
+        dotnet pack -c Release -o out  -p:PackageVersion="$IMAGE_VERSION"
+        dotnet nuget push "out/**/*.nupkg" --source github --skip-duplicate --api-key "$GITHUB_TOKEN"
+        echo "## Nuget Package Created" >> $GITHUB_STEP_SUMMARY
+        echo "${{ env.IMAGE_VERSION }}" >> $GITHUB_STEP_SUMMARY
+
+    - shell: bash
+      name: Set Language env
+      run: |
+        echo "LANGUAGE=dotnet" >> "$GITHUB_ENV"
