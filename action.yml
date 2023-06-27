@@ -93,10 +93,14 @@ runs:
       shell: bash
       run: |
         mkdir -p out
-        dotnet pack -c Release -o out  -p:PackageVersion="$IMAGE_VERSION"
+        dotnet pack -c Release -o out -p:PackageVersion="$IMAGE_VERSION"
         dotnet nuget push "out/**/*.nupkg" --source github --skip-duplicate --api-key "$GITHUB_TOKEN"
         echo "## Nuget Package Created" >> $GITHUB_STEP_SUMMARY
         echo "${{ env.IMAGE_VERSION }}" >> $GITHUB_STEP_SUMMARY
+
+    - name: Create Release Action
+      uses: variant-inc/actions-collection/create-release-tag@v2
+      if: ${{ inputs.nuget_push_enabled == 'true' && inputs.ecr_repository == '' }}
 
     - shell: bash
       name: Set Language env
