@@ -24,7 +24,7 @@ description: |
           dotnet-version: '6.0.x'
   ```
 inputs:
-  aws_region:
+  cloud_region:
     description: Region where the image will be created.
     required: false
     default: us-east-2
@@ -77,7 +77,7 @@ runs:
       uses: variant-inc/actions-collection/build-push-image@v2
       if: ${{ inputs.ecr_repository != '' }}
       with:
-        aws_region: ${{ inputs.aws_region }}
+        aws_region: ${{ inputs.cloud_region }}
         dockerfile_dir_path: ${{ inputs.dockerfile_dir_path }}
         ecr_repository: ${{ inputs.ecr_repository }}
 
