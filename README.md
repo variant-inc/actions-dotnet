@@ -35,6 +35,8 @@ Dotnet Packages are located within the NuGet registry here.
 https://github.com/orgs/<organization>/packages?ecosystem=all
 ```
 
+## Using Packages
+
 To use a package, follow these instructions below. First authenticate to GitHub Packages,
 change the .csproj file to match the package, and then use the dotnet restore command.
 
