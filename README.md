@@ -26,6 +26,32 @@ permissions:
         ecr_repository: 'demo/example'
         dotnet-version: '6.0.x'
 ```
+
+## Locating Packages
+
+Dotnet Packages are located within the NuGet registry here.
+
+```text
+https://github.com/orgs/<organization>/packages?ecosystem=all
+```
+
+## Using Packages
+
+To use a package, follow these instructions below. First authenticate to GitHub Packages,
+change the .csproj file to match the package, and then use the dotnet restore command.
+
+```text
+Following these instructions
+https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-nuget-registry#installing-a-package
+```
+
+## Locating Container Images
+
+ECR containers can be located with this URI.
+
+```text
+064859874041.dkr.ecr.us-east-2.amazonaws.com/<ecr_repository>
+```
 <!-- action-docs-description -->
 
 <!-- action-docs-inputs -->
