@@ -11,9 +11,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - uses: actions/setup-python@v3
       - name: Install pre-commit dependencies
         run: |
           # Action Docs - https://github.com/npalm/action-docs
           npm install -g action-docs
-      - uses: actions/setup-python@v3
+
+          sudo apt install shellcheck
+
+          SHFFMT_VERSION="$(curl -sfSL https://api.github.com/repos/mvdan/sh/releases/latest | jq -r '.tag_name')"
+          curl -sfSLo ./shfmt "https://github.com/mvdan/sh/releases/download/$SHFFMT_VERSION/shfmt_${SHFFMT_VERSION}_$(uname)_amd64"
+          chmod +x shfmt
+          mv shfmt $HOME/.local/bin/
       - uses: pre-commit/action@v3.0.0

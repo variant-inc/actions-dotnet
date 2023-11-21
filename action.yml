@@ -68,8 +68,8 @@ inputs:
       using the dotnet-version input.
     required: false
   ecr_repository:
-    description: Ecr repository name
-    required: true
+    description: ECR repository name
+    required: false
   nuget-version:
     description: Nuget version
     required: false

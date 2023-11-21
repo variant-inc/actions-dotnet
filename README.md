@@ -62,7 +62,7 @@ ECR containers can be located with this URI.
 | cloud_region | Region where the image will be created. | `false` | us-east-2 |
 | dockerfile_dir_path | Directory path to the dockerfile | `false` | . |
 | dotnet-version | The dotnet-version input is optional. The default version of Dotnet in PATH varies between runners and can be changed unexpectedly so we recommend always setting Dotnet version explicitly using the dotnet-version input.  | `false` |  |
-| ecr_repository | Ecr repository name | `true` |  |
+| ecr_repository | ECR repository name | `false` |  |
 | nuget-version | Nuget version | `false` | latest |
 | nuget_push_enabled | Enabled Nuget Push to Package Registry. | `false` | false |
 <!-- action-docs-inputs -->
