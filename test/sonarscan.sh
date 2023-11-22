@@ -31,6 +31,11 @@ sonar_args="/o:$SONAR_ORGANIZATION \
     /d:sonar.scm.revision=$GITHUB_SHA \
     /d:sonar.qualitygate.wait=$wait_flag"
 
+if test -f Dockerfile; then
+	sonar_args="$sonar_args \
+    /d:sonar.docker.hadolint.reportPaths=coverage/hadolint.sonar"
+fi
+
 eval "dotnet sonarscanner begin $sonar_args /d:sonar.branch.name=$GITVERSION_BRANCHNAME"
 dotnet build
 pwsh ./.github/workflows/actions-dotnet/test/cover.ps1
