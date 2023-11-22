@@ -22,6 +22,7 @@ runs:
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: ${{ inputs.dotnet-version }}
+        cache: 'true'
 
     - name: Set up Dotnet
       uses: actions/setup-dotnet@v3
@@ -38,6 +39,11 @@ runs:
         echo "pretest_cmd: $pretest_cmd"
         sh -c "${pretest_cmd}"
 
+    - uses: actions/setup-java@v3
+      with:
+        distribution: zulu
+        java-version: '17'
+
     - name: Restore Application Dependencies
       shell: bash
       run: |
@@ -45,11 +51,30 @@ runs:
         dotnet restore
         echo "::endgroup::"
 
+    # Speed-up analysis by caching the scanner workspace
+    - name: Cache SonarCloud workspace
+      uses: actions/cache@v3
+      with:
+        path: ~/.sonar/cache
+        key: ${{ runner.os }}-sonar-cache
+        restore-keys: ${{ runner.os }}-sonar-cache
+
+    # Speed-up analysis by caching the scanner installation
+    - name: Cache SonarCloud scanner
+      id: cache-sonar-scanner
+      uses: actions/cache@v3
+      with:
+        path: ./.sonar
+        key: ${{ runner.os }}-sonar-scanner
+        restore-keys: ${{ runner.os }}-sonar-scanner
+
     - name: Install Sonarscan Dependencies
+      if: steps.cache-sonar-scanner.outputs.cache-hit != 'true'
       shell: bash
       run: |
-        dotnet tool install --global dotnet-sonarscanner
-        dotnet tool install --global coverlet.console
+        mkdir -p ./.sonar
+        dotnet tool update dotnet-sonarscanner --tool-path ./.sonar
+        dotnet tool update coverlet.console --tool-path ./.sonar
 
     - name: Check Dockerfile existence
       id: check_dockerfile
@@ -68,4 +93,5 @@ runs:
     - name: dotnet sonarscan
       shell: bash
       run: |
+        export PATH=$PATH:$GITHUB_WORKSPACE/.sonar
         ./.github/workflows/actions-dotnet/test/sonarscan.sh
