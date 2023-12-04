@@ -42,7 +42,7 @@ dotnet build
 pwsh ./.github/workflows/actions-dotnet/test/cover.ps1
 
 set +ue
-dotnet sonarscanner end /d:sonar.login="$SONAR_TOKEN"
+dotnet sonarscanner end /d:sonar.token="$SONAR_TOKEN"
 exit_code=$?
 if [ "$exit_code" -eq 0 ]; then
 	echo -e "\e[1;32m ________________________________________________________________\e[0m"
