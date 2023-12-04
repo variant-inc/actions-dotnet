@@ -24,12 +24,18 @@ fi
 sonar_args="/o:$SONAR_ORGANIZATION \
     /k:$SONAR_PROJECT_KEY \
     /d:sonar.host.url=https://sonarcloud.io \
-    /d:sonar.login=$SONAR_TOKEN \
+    /d:sonar.token=$SONAR_TOKEN \
     /d:sonar.cs.opencover.reportsPaths=**/$OUTPUTDIR/**/coverage.opencover.xml \
     /d:sonar.exclusions=**/*Migrations/**/* \
     /d:sonar.scm.disabled=true \
     /d:sonar.scm.revision=$GITHUB_SHA \
     /d:sonar.qualitygate.wait=$wait_flag"
+
+if test -f "$GITHUB_WORKSPACE/coverage/hadolint.sonar"; then
+	cat "$GITHUB_WORKSPACE/coverage/hadolint.sonar"
+	sonar_args="$sonar_args \
+    /d:sonar.docker.hadolint.reportPaths=coverage/hadolint.sonar"
+fi
 
 eval "dotnet sonarscanner begin $sonar_args /d:sonar.branch.name=$GITVERSION_BRANCHNAME"
 dotnet build
