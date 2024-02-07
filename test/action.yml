@@ -27,7 +27,7 @@ runs:
       uses: actions/cache@v3
       with:
         path: ~/.nuget/packages
-        key: ${{ runner.os }}-nuget
+        key: ${{ github.repository }}-nuget
 
     - name: Set up Dotnet
       uses: actions/setup-dotnet@v3

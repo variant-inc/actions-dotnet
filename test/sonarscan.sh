@@ -37,7 +37,7 @@ if test -f "$GITHUB_WORKSPACE/coverage/hadolint.sonar"; then
     /d:sonar.docker.hadolint.reportPaths=coverage/hadolint.sonar"
 fi
 
-eval "dotnet sonarscanner begin $sonar_args /d:sonar.branch.name=$GITVERSION_BRANCHNAME"
+eval "dotnet sonarscanner begin $sonar_args /d:sonar.branch.name=${GitVersion_BranchName:?}"
 dotnet build
 pwsh ./.github/workflows/actions-dotnet/test/cover.ps1
 
