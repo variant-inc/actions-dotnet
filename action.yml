@@ -114,7 +114,7 @@ runs:
         ecr_repository: ${{ inputs.ecr_repository }}
 
     - name: Set up Nuget
-      uses: nuget/setup-nuget@v1
+      uses: nuget/setup-nuget@v2
       if: ${{ inputs.nuget_push_enabled == 'true' }}
       with:
         nuget-api-key: ${{ env.GITHUB_TOKEN }}
