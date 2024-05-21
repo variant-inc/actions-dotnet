@@ -35,6 +35,8 @@ $tests | ForEach-Object {
 $OUTPUTDIR = "coverage"
 
 ce dotnet test `
+  --blame-hang-timeout 1m `
+  --blame-hang-dump-type none `
   /p:CollectCoverage=true `
   /p:CoverletOutput=${env:OUTPUTDIR}/coverage.opencover.xml `
   /p:CoverletOutputFormat=opencover `
