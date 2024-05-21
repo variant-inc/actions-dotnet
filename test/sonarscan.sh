@@ -25,7 +25,7 @@ sonar_args="/o:$SONAR_ORGANIZATION \
     /k:$SONAR_PROJECT_KEY \
     /d:sonar.host.url=https://sonarcloud.io \
     /d:sonar.token=$SONAR_TOKEN \
-    /d:sonar.cs.opencover.reportsPaths=**/$OUTPUTDIR/**/coverage.opencover.xml \
+    /d:sonar.cs.opencover.reportsPaths=**/TestResults/*/coverage.opencover.xml \
     /d:sonar.exclusions=**/*Migrations/**/* \
     /d:sonar.scm.disabled=true \
     /d:sonar.scm.revision=$GITHUB_SHA \
@@ -41,8 +41,15 @@ eval "dotnet sonarscanner begin $sonar_args /d:sonar.branch.name=${GitVersion_Br
 dotnet build
 pwsh ./.github/workflows/actions-dotnet/test/cover.ps1
 
+dotnet test \
+	--collect "XPlat Code Coverage;Format=opencover;ExcludeByFile=**.g.cs" \
+	--filter "FullyQualifiedName!~ntegration" \
+	--blame-hang-timeout 1m \
+	--blame-hang-dump-type none
+
 set +ue
 dotnet sonarscanner end /d:sonar.token="$SONAR_TOKEN"
+
 exit_code=$?
 if [ "$exit_code" -eq 0 ]; then
 	echo -e "\e[1;32m ________________________________________________________________\e[0m"
