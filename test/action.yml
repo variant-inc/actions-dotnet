@@ -65,11 +65,11 @@ runs:
         restore-keys: ${{ runner.os }}-sonar-cache
 
     # Speed-up analysis by caching the scanner installation
-    - name: Cache SonarCloud scanner
+    - name: Cache Dotnet Tools
       id: cache-sonar-scanner
       uses: actions/cache@v4
       with:
-        path: ./.sonar
+        path: ./.tools
         key: ${{ runner.os }}-sonar-scanner
         restore-keys: ${{ runner.os }}-sonar-scanner
 
@@ -77,9 +77,9 @@ runs:
       if: steps.cache-sonar-scanner.outputs.cache-hit != 'true'
       shell: bash
       run: |
-        mkdir -p ./.sonar
-        dotnet tool update dotnet-sonarscanner --tool-path ./.sonar
-        dotnet tool update coverlet.console --tool-path ./.sonar
+        mkdir -p ./.tools
+        dotnet tool update dotnet-sonarscanner --tool-path ./.tools
+        dotnet tool update coverlet.console --tool-path ./.tools
 
     - name: Check Dockerfile existence
       id: check_dockerfile
@@ -98,5 +98,5 @@ runs:
     - name: dotnet sonarscan
       shell: bash
       run: |
-        export PATH=$PATH:$GITHUB_WORKSPACE/.sonar
+        export PATH=$PATH:$GITHUB_WORKSPACE/.tools
         ./.github/workflows/actions-dotnet/test/sonarscan.sh

@@ -28,18 +28,5 @@ $tests = $(dotnet sln $solutionFileDir list) | Select-Object -Skip 2 | Where-Obj
 $tests | ForEach-Object {
   $file = [System.IO.DirectoryInfo]"$_"
   $parent = $($file.parent.fullname)
-  ce dotnet add $parent package coverlet.msbuild
   ce dotnet add $parent package coverlet.collector
 }
-
-$OUTPUTDIR = "coverage"
-
-ce dotnet test `
-  --blame-hang-timeout 1m `
-  --blame-hang-dump-type none `
-  /p:CollectCoverage=true `
-  /p:CoverletOutput=${env:OUTPUTDIR}/coverage.opencover.xml `
-  /p:CoverletOutputFormat=opencover `
-  /p:CoverletSkipAutoProps=true `
-  /p:Exclude=[*]*Migrations.* `
-  --filter "FullyQualifiedName!~ntegration"
