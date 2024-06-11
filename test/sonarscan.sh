@@ -17,7 +17,7 @@ err() {
 trap "err" ERR
 
 wait_flag="false"
-if [ "$BRANCH_NAME" == "master" ] || [ "$BRANCH_NAME" == "main" ]; then
+if [ "${GitVersion_PreReleaseLabel:=label}" == "" ]; then
 	wait_flag="true"
 fi
 
