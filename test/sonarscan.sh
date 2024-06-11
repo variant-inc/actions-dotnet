@@ -1,6 +1,8 @@
 #!/bin/bash
 
-set -ex
+set -e
+
+declare GitVersion_PreReleaseLabel
 
 mkdir -p "$GITHUB_WORKSPACE/coverage"
 
