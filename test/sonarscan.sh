@@ -16,7 +16,7 @@ err() {
 trap "err" ERR
 
 wait_flag="false"
-if [ "${GitVersion_PreReleaseLabel:?}" == "" ]; then
+if [ "${GitVersion_PreReleaseLabel}" == "" ]; then
 	wait_flag="true"
 fi
 echo "Sonar Wait Flag: $wait_flag"
