@@ -97,6 +97,8 @@ runs:
     - name: Build & Test Dotnet
       uses: ./.github/workflows/actions-dotnet/test
       if: ${{ steps.sonar-setup.outputs.sonar_skip != 'True' }}
+      env:
+        wait_flag: ${{ steps.sonar-setup.outputs.wait_flag }}
       with:
         dotnet-version: ${{ inputs.dotnet-version }}
 

@@ -2,7 +2,7 @@
 
 set -e
 
-declare GitVersion_PreReleaseLabel
+declare wait_flag
 
 mkdir -p "$GITHUB_WORKSPACE/coverage"
 
