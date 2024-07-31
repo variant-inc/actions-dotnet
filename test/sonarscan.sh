@@ -17,11 +17,11 @@ err() {
 
 trap "err" ERR
 
-wait_flag="false"
-if [ "${GitVersion_PreReleaseLabel}" == "" ]; then
-	wait_flag="true"
-fi
-echo "Sonar Wait Flag: $wait_flag"
+# wait_flag="false"
+# if [ "${GitVersion_PreReleaseLabel}" == "" ]; then
+# 	wait_flag="true"
+# fi
+# echo "Sonar Wait Flag: $wait_flag"
 
 sonar_args="/o:$SONAR_ORGANIZATION \
     /k:$SONAR_PROJECT_KEY \
