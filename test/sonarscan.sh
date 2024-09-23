@@ -31,7 +31,8 @@ sonar_args="/o:$SONAR_ORGANIZATION \
     -d:sonar.exclusions=**/*Migrations/**/* \
     -d:sonar.scm.disabled=true \
     -d:sonar.scm.revision=$GITHUB_SHA \
-    -d:sonar.qualitygate.wait=$wait_flag"
+    -d:sonar.qualitygate.wait=$wait_flag \
+	-d:sonar.scanner.scanAll=false"
 
 if test -f "$GITHUB_WORKSPACE/coverage/hadolint.sonar"; then
 	cat "$GITHUB_WORKSPACE/coverage/hadolint.sonar"
