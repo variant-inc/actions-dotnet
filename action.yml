@@ -108,7 +108,7 @@ runs:
       if: ${{ steps.sonar-setup.outputs.wait_flag == 'true' }}
 
     - name: Build and Push Image
-      uses: variant-inc/actions-collection/build-push-image@v2
+      uses: variant-inc/actions-collection/build-push-image@fix/trivy-ecr
       if: ${{ inputs.ecr_repository != '' }}
       with:
         aws_region: ${{ inputs.cloud_region }}
