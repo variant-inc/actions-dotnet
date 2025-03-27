@@ -82,7 +82,7 @@ runs:
   using: composite
   steps:
     - name: Setup Actions
-      uses: variant-inc/actions-setup@v2
+      uses: variant-inc/actions-setup@feature/delete-releases
 
     - name: Sonar Setup
       id: sonar-setup
