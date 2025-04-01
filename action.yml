@@ -82,7 +82,7 @@ runs:
   using: composite
   steps:
     - name: Setup Actions
-      uses: variant-inc/actions-setup@feature/delete-releases
+      uses: variant-inc/actions-setup@feature/CLOUD-2638-remove-dry-run
 
     - name: Sonar Setup
       id: sonar-setup
