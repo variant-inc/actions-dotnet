@@ -24,15 +24,15 @@ trap "err" ERR
 # echo "Sonar Wait Flag: $wait_flag"
 
 sonar_args="/o:$SONAR_ORGANIZATION \
-    /k:$SONAR_PROJECT_KEY \
-    -d:sonar.host.url=https://sonarcloud.io \
-    -d:sonar.token=$SONAR_TOKEN \
-    -d:sonar.cs.opencover.reportsPaths=**/TestResults/*/coverage.opencover.xml \
-    -d:sonar.exclusions=**/*Migrations/**/* \
-    -d:sonar.scm.disabled=true \
-    -d:sonar.scm.revision=$GITHUB_SHA \
-    -d:sonar.qualitygate.wait=$wait_flag \
-	-d:sonar.scanner.scanAll=false"
+		/k:$SONAR_PROJECT_KEY \
+		-d:sonar.host.url=https://sonarcloud.io \
+		-d:sonar.token=$SONAR_TOKEN \
+		-d:sonar.cs.opencover.reportsPaths=**/TestResults/*/coverage.opencover.xml \
+		-d:sonar.exclusions=**/*Migrations/**/*,**/packages.lock.json \
+		-d:sonar.scm.disabled=true \
+		-d:sonar.scm.revision=$GITHUB_SHA \
+		-d:sonar.qualitygate.wait=$wait_flag \
+		-d:sonar.scanner.scanAll=false"
 
 if test -f "$GITHUB_WORKSPACE/coverage/hadolint.sonar"; then
 	cat "$GITHUB_WORKSPACE/coverage/hadolint.sonar"
