@@ -19,7 +19,7 @@ runs:
   using: composite
   steps:
     - name: Set up Dotnet
-      uses: actions/setup-dotnet@v4
+      uses: actions/setup-dotnet@v5
       with:
         dotnet-version: ${{ inputs.dotnet-version }}
 
@@ -30,7 +30,7 @@ runs:
         key: ${{ github.repository }}-nuget
 
     - name: Set up Dotnet
-      uses: actions/setup-dotnet@v4
+      uses: actions/setup-dotnet@v5
       with:
         dotnet-version: 5.0.x
 
