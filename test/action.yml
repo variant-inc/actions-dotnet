@@ -19,7 +19,7 @@ runs:
   using: composite
   steps:
     - name: Set up Dotnet
-      uses: actions/setup-dotnet@v4
+      uses: actions/setup-dotnet@v5
       with:
         dotnet-version: ${{ inputs.dotnet-version }}
 
@@ -30,7 +30,7 @@ runs:
         key: ${{ github.repository }}-nuget
 
     - name: Set up Dotnet
-      uses: actions/setup-dotnet@v4
+      uses: actions/setup-dotnet@v5
       with:
         dotnet-version: 5.0.x
 
@@ -87,7 +87,7 @@ runs:
       with:
         files: Dockerfile
 
-    - uses: hadolint/hadolint-action@v3.1.0
+    - uses: hadolint/hadolint-action@v3.2.0
       if: steps.check_dockerfile.outputs.files_exists == 'true'
       with:
         dockerfile: Dockerfile
