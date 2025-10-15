@@ -41,12 +41,14 @@ if [[ "$ENABLE_SONAR" == "true" ]]; then
 	eval "dotnet sonarscanner begin $sonar_args -d:sonar.branch.name=${GitVersion_BranchName:?}"
 fi
 
-dotnet build
+dotnet build --no-restore --configuration Release
+
 dotnet test \
 	--collect "XPlat Code Coverage;Format=opencover;ExcludeByFile=**.g.cs" \
 	--filter "FullyQualifiedName!~ntegration" \
 	--blame-hang-timeout 1m \
-	--blame-hang-dump-type none
+	--blame-hang-dump-type none \
+	--no-build --configuration Release
 
 if [[ "$ENABLE_SONAR" == "true" ]]; then
 	set +ue

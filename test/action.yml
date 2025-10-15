@@ -109,3 +109,24 @@ runs:
       run: |
         export PATH=$PATH:$GITHUB_WORKSPACE/.tools
         ./.github/workflows/actions-dotnet/test/test.sh
+
+    - name: Generate Pretty Report (only if tests pass)
+      if: env.ENABLE_SONAR != 'true'
+      uses: danielpalme/ReportGenerator-GitHub-Action@5.4.16
+      with:
+        reports: '**/coverage.opencover.xml'
+        targetdir: coveragereport
+        reporttypes: Html;MarkdownSummaryGithub
+        title: 📊 Test Results
+
+    - name: Add to Build Summary
+      if: env.ENABLE_SONAR != 'true'
+      run: cat coveragereport/SummaryGithub.md >> $GITHUB_STEP_SUMMARY
+      shell: bash
+
+    - name: Upload Coverage Report
+      if: env.ENABLE_SONAR != 'true'
+      uses: actions/upload-artifact@v4
+      with:
+        name: coverage-report
+        path: coveragereport
