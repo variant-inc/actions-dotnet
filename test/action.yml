@@ -112,7 +112,7 @@ runs:
 
     - name: Generate Pretty Report (only if tests pass)
       if: env.ENABLE_SONAR != 'true'
-      uses: danielpalme/ReportGenerator-GitHub-Action@5.4.16
+      uses: danielpalme/ReportGenerator-GitHub-Action@v5.4.17
       with:
         reports: '**/coverage.opencover.xml'
         targetdir: coveragereport
