@@ -45,6 +45,7 @@ runs:
         sh -c "${pretest_cmd}"
 
     - uses: actions/setup-java@v5
+      if: env.ENABLE_SONAR == 'true'
       with:
         distribution: zulu
         java-version: '17'
@@ -59,6 +60,7 @@ runs:
     # Speed-up analysis by caching the scanner workspace
     - name: Cache SonarCloud workspace
       uses: actions/cache@v4
+      if: env.ENABLE_SONAR == 'true'
       with:
         path: ~/.sonar/cache
         key: ${{ runner.os }}-sonar-cache
@@ -68,6 +70,7 @@ runs:
     - name: Cache Dotnet Tools
       id: cache-sonar-scanner
       uses: actions/cache@v4
+      if: env.ENABLE_SONAR == 'true'
       with:
         path: ./.tools
         key: ${{ runner.os }}-sonar-scanner
@@ -78,25 +81,52 @@ runs:
       shell: bash
       run: |
         mkdir -p ./.tools
-        dotnet tool update dotnet-sonarscanner --tool-path ./.tools
+
+        if [[ "$ENABLE_SONAR" == "true" ]]; then
+          dotnet tool update dotnet-sonarscanner --tool-path ./.tools
+        fi
         dotnet tool update coverlet.console --tool-path ./.tools
 
     - name: Check Dockerfile existence
       id: check_dockerfile
       uses: andstor/file-existence-action@v3
+      if: env.ENABLE_SONAR == 'true'
       with:
         files: Dockerfile
 
     - uses: hadolint/hadolint-action@v3.3.0
-      if: steps.check_dockerfile.outputs.files_exists == 'true'
+      if: >
+        steps.check_dockerfile.outputs.files_exists == 'true' &&
+        env.ENABLE_SONAR == 'true'
       with:
         dockerfile: Dockerfile
         output-file: coverage/hadolint.sonar
         format: sonarqube
         no-fail: true
 
-    - name: dotnet sonarscan
+    - name: dotnet test & sonarscan
       shell: bash
       run: |
         export PATH=$PATH:$GITHUB_WORKSPACE/.tools
-        ./.github/workflows/actions-dotnet/test/sonarscan.sh
+        ./.github/workflows/actions-dotnet/test/test.sh
+
+    - name: Generate Pretty Report (only if tests pass)
+      if: env.ENABLE_SONAR != 'true'
+      uses: danielpalme/ReportGenerator-GitHub-Action@5.4.16
+      with:
+        reports: '**/coverage.opencover.xml'
+        targetdir: coveragereport
+        reporttypes: Html;MarkdownSummaryGithub
+        title: 📊 Test Results
+
+    - name: Add to Build Summary
+      if: env.ENABLE_SONAR != 'true'
+      run: cat coveragereport/SummaryGithub.md >> $GITHUB_STEP_SUMMARY
+      shell: bash
+
+    - name: Upload Coverage Report
+      if: env.ENABLE_SONAR != 'true'
+      uses: actions/upload-artifact@v4
+      with:
+        name: coverage-report
+        path: coveragereport
