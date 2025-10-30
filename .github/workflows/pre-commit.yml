@@ -4,6 +4,12 @@ name: Pre-Commit
 
 on:  # yamllint disable-line rule:truthy
   push:
+    branches:
+      - '**'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   preCommit:
