@@ -110,8 +110,21 @@ runs:
         export PATH=$PATH:$GITHUB_WORKSPACE/.tools
         ./.github/workflows/actions-dotnet/test/test.sh
 
-    - name: Generate Pretty Report (only if tests pass)
+    - name: Check for Coverage Files
+      id: coverage_check
       if: env.ENABLE_SONAR != 'true'
+      shell: bash
+      run: |
+        if compgen -G "**/coverage.opencover.xml" > /dev/null; then
+          echo "found=true" >> $GITHUB_OUTPUT
+          echo "Coverage files found"
+        else
+          echo "found=false" >> $GITHUB_OUTPUT
+          echo "No coverage files found - skipping report generation"
+        fi
+
+    - name: Generate Pretty Report (only if tests pass)
+      if: env.ENABLE_SONAR != 'true' && steps.coverage_check.outputs.found == 'true'
       uses: danielpalme/ReportGenerator-GitHub-Action@v5.4.18
       with:
         reports: '**/coverage.opencover.xml'
@@ -120,12 +133,12 @@ runs:
         title: 📊 Test Results
 
     - name: Add to Build Summary
-      if: env.ENABLE_SONAR != 'true'
+      if: env.ENABLE_SONAR != 'true' && steps.coverage_check.outputs.found == 'true'
       run: cat coveragereport/SummaryGithub.md >> $GITHUB_STEP_SUMMARY
       shell: bash
 
     - name: Upload Coverage Report
-      if: env.ENABLE_SONAR != 'true'
+      if: env.ENABLE_SONAR != 'true' && steps.coverage_check.outputs.found == 'true'
       uses: actions/upload-artifact@v5
       with:
         name: coverage-report
