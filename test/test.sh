@@ -2,8 +2,15 @@
 
 set -e
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-pwsh "${SCRIPT_DIR}/cover.ps1"
+# Add coverlet.collector to test projects
+dotnet sln list | tail -n +3 | while IFS= read -r project; do
+	isTest=$(dotnet msbuild "$project" -getProperty:IsTestProject 2>/dev/null)
+	if [[ "$isTest" == "true" ]]; then
+		dir=$(dirname "$project")
+		echo "Adding coverlet.collector to $dir"
+		dotnet add "$dir" package coverlet.collector
+	fi
+done
 
 declare wait_flag
 
