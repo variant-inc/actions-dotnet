@@ -8,7 +8,7 @@ description: |
     SONAR_TOKEN
 inputs:
   dotnet-version:
-    description: >
+    description: >-
       The dotnet-version input is optional.
       The default version of Dotnet in PATH varies
       between runners and can be changed unexpectedly
@@ -115,7 +115,7 @@ runs:
       if: env.ENABLE_SONAR != 'true'
       shell: bash
       run: |
-        if compgen -G "**/coverage.opencover.xml" > /dev/null; then
+        if find . -name "coverage.opencover.xml" -print -quit | grep -q .; then
           echo "found=true" >> $GITHUB_OUTPUT
           echo "Coverage files found"
         else

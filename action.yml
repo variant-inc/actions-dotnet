@@ -60,7 +60,7 @@ inputs:
     required: false
     default: .
   dotnet-version:
-    description: >
+    description: >-
       The dotnet-version input is optional.
       The default version of Dotnet in PATH varies
       between runners and can be changed unexpectedly
